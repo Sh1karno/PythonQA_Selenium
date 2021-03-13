@@ -3,6 +3,7 @@ import pytest
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.opera.options import Options as OperaOptions
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -68,4 +69,8 @@ def browser(request):
 
     return driver
 
+
+@pytest.fixture
+def wait(browser):
+    return WebDriverWait(browser, 3)
 
