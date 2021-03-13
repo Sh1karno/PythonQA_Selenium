@@ -12,4 +12,4 @@
   
 - Without heddless option
 
-`pytest -vs --no_headless --browser={choise_chrome_firehox_opera} --url={you_opencart_URL}`
+`pytest -vs --no_headless --browser={chrome/firehox/opera} --url={you_opencart_URL}`
