@@ -1,55 +1,24 @@
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
+from PageObject.admin_page import AdminPage
 
 
 class TestAdminPage:
 
-    def test_failed_login(self, browser, wait):
-        browser.get(browser.url + "/admin/")
+    def test_failed_login(self, browser):
+        browser.open(AdminPage.PATH)
+        AdminPage(browser).login_admin("user", "")
+        assert AdminPage(browser).display_warning_text() == \
+            "No match for Username and/or Password.\n×"
 
-        username_field = browser.find_element_by_css_selector("[placeholder=\"Username\"]")
-        username_field.send_keys("user")
+    def test_passed_login(self, browser):
+        browser.open(AdminPage.PATH)
+        AdminPage(browser).login_admin("user", "bitnami")
+        assert AdminPage(browser).display_admin_name() == \
+            'John Doe'
 
-        password_field = browser.find_element_by_css_selector("[placeholder=\"Password\"]")
-        password_field.send_keys("")
-
-        login_button = browser.find_element_by_css_selector("button.btn-primary")
-        login_button.click()
-
-        alert = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.alert")))
-        assert alert.text == "No match for Username and/or Password.\n×"
-
-    def test_passed_login(self, browser, wait):
-        browser.get(browser.url + "/admin/")
-
-        username_field = browser.find_element_by_css_selector("[placeholder=\"Username\"]")
-        username_field.send_keys("user")
-
-        password_field = browser.find_element_by_css_selector("[placeholder=\"Password\"]")
-        password_field.send_keys("bitnami")
-
-        login_button = browser.find_element_by_css_selector("button.btn-primary")
-        login_button.click()
-
-        john = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "a.dropdown-toggle")))
-        assert john.text == 'John Doe'
-
-    def test_open_product_table(self, browser, wait):
-        browser.get(browser.url + "/admin/")
-
-        username_field = browser.find_element_by_css_selector("[placeholder=\"Username\"]")
-        username_field.send_keys("user")
-
-        password_field = browser.find_element_by_css_selector("[placeholder=\"Password\"]")
-        password_field.send_keys("bitnami")
-
-        login_button = browser.find_element_by_css_selector("button.btn-primary")
-        login_button.click()
-
-        catalog = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "[href=\"#collapse1\"]")))
-        catalog.click()
-
-        products = wait.until(EC.visibility_of_element_located((By.PARTIAL_LINK_TEXT, "Products")))
-        products.click()
-
-        wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "#form-product")))
+    def test_open_product_table(self, browser):
+        browser.open(AdminPage.PATH)
+        AdminPage(browser) \
+            .login_admin("user", "bitnami") \
+            .click_to_catalog_menu_item() \
+            .click_to_products_catalog_item() \
+            .display_product_table()
