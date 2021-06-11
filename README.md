@@ -13,3 +13,6 @@
 - Without heddless option
 
 `pytest -vs --no_headless --browser={chrome/firehox/opera} --url={you_opencart_URL}`
+
+#### Logs saved to the `logs/`
+##### Screenshots when exceptions saved to the `screenshots/`
