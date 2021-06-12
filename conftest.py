@@ -1,5 +1,6 @@
 import pytest
 import logging
+import os
 
 from datetime import datetime
 from selenium import webdriver
@@ -48,17 +49,33 @@ def set_time_test():
     print(' | test-case runtime:', end_time - start_time)
 
 
-@pytest.fixture(scope="function")
-def url(request):
-    return f'http://{request.config.getoption("--url")}'
-
-
-@pytest.fixture(scope="function")
-def browser(request, url):
+@pytest.fixture(scope="session")
+def browser(request):
     browser = request.config.getoption("--browser")
-    headless = request.config.getoption("--headless")
+    return browser
+
+
+@pytest.fixture(scope="session")
+def url(request):
+    url = f'http://{request.config.getoption("--url")}'
+    return url
+
+
+@pytest.fixture(scope="session")
+def bversion(request):
+    bversion = request.config.getoption("--bversion")
+    return bversion
+
+
+@pytest.fixture(scope="session")
+def executor(request):
     executor = request.config.getoption("--executor")
-    version = request.config.getoption("--bversion")
+    return executor
+
+
+@pytest.fixture(scope="function")
+def driver(request, url, executor, bversion, browser):
+    headless = request.config.getoption("--headless")
     vnc = request.config.getoption("--vnc")
     logs = request.config.getoption("--logs")
     videos = request.config.getoption("--videos")
@@ -93,7 +110,7 @@ def browser(request, url):
 
         caps = {
             "browserName": browser,
-            "browserVersion": version,
+            "browserVersion": bversion,
             "name": "Opencard tests",
             "selenoid:options": {
                 "enableVNC": vnc,
@@ -129,3 +146,11 @@ def browser(request, url):
 
     return driver
 
+
+@pytest.fixture(scope="session", autouse=True)
+def allure_enviroment(browser, bversion, executor):
+    filename = "allure-results/environment.properties"
+    data = f"Browser={browser}\nBrowser.Version={bversion}\nStand={executor}"
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    with open(filename, "w") as file:
+        file.write(data)

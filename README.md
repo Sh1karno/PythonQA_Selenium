@@ -11,12 +11,20 @@
 where:
 
 `--headless` - enable headless mode
+
 `--vlc` - enable video streaming in Selenoid
+
 `--logs` - enable logging in Selenoid
+
 `--video` - enable video recording in Selenoid
+
 `--browser` - choice browser
+
 `--executor` - add ip address remote service, if "local" execute on local webdriver
+
 `--url` - add opencard URL
 
+
 #### Logs saved to the `logs/`
-##### Screenshots when exceptions saved to the `screenshots/`
+#### Screenshots when exceptions saved to the `screenshots/`
+#### Tests generate allure report.
