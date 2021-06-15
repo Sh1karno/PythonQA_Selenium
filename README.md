@@ -6,10 +6,25 @@
 
 #### TO RUN TESTS:
 
-- With heddless option
+`pytest -vs --headless --vlc --logs --video --browser={chrome/firehox/opera} --executor {ip_selenoid_server} --url={opencart_URL}`
 
-`pytest -vs --browser={chrome/firehox/opera} --url={you_opencart_URL}`
-  
-- Without heddless option
+where:
 
-`pytest -vs --no_headless --browser={chrome/firehox/opera} --url={you_opencart_URL}`
+`--headless` - enable headless mode
+
+`--vlc` - enable video streaming in Selenoid
+
+`--logs` - enable logging in Selenoid
+
+`--video` - enable video recording in Selenoid
+
+`--browser` - choice browser
+
+`--executor` - add ip address remote service, if "local" execute on local webdriver
+
+`--url` - add opencard URL
+
+
+#### Logs saved to the `logs/`
+#### Screenshots when exceptions saved to the `screenshots/`
+#### Tests generate allure report.
