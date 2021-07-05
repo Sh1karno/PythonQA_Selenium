@@ -1,6 +1,6 @@
 # PythonQA_Selenium
 
-###Homework to Selenium lesson 
+### Homework to Selenium lesson 
 
 #### PRECONDITION: install webdrivers on you local machine and add path in PATH variable
 
